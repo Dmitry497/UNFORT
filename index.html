@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNFORT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="preloader" id="preloader">
+        <div class="preloader__content">UNFORT</div>
+    </div>
+    <div id="header-placeholder"></div>
+    <div id="modals-placeholder"></div>
+    <div class="main-content">
+        <div class="category-tabs-wrapper">
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">ALL</button>
+                <button class="category-tab" data-category="outerwear">OUTERWEAR</button>
+                <button class="category-tab" data-category="hoodies">HOODIES</button>
+                <button class="category-tab" data-category="longsleeve">LONG SLEEVE</button>
+                <button class="category-tab" data-category="tshirts">T-SHIRTS</button>
+                <button class="category-tab" data-category="pants">PANTS</button>
+                <button class="category-tab" data-category="shorts">SHORTS</button>
+                <button class="category-tab" data-category="accessories">ACCESSORIES</button>
+            </div>
+        </div>
+        <section class="products">
+            <div class="products__grid" id="products-grid"></div>
+        </section>
+        <div class="pagination" id="pagination">
+            <button class="pagination__arrow pagination__arrow--prev" id="prevPage" disabled>←</button>
+            <div class="pagination__pages">
+                <button class="pagination__page active" data-page="1">1</button>
+                <button class="pagination__page" data-page="2">2</button>
+            </div>
+            <button class="pagination__arrow pagination__arrow--next" id="nextPage">→</button>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script src="js/data.js"></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>
