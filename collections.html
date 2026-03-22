@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNFORT - Коллекции</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="preloader" id="preloader">
+        <div class="preloader__content">UNFORT</div>
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div class="collections-nav">
+            <div class="collections-nav__container">
+                <button class="collections-nav__btn active" data-collection="ss25">Unfort S/S 25</button>
+                <button class="collections-nav__btn" data-collection="exsample">Ex Sample</button>
+                <button class="collections-nav__btn" data-collection="rare">Unfort Rare</button>
+            </div>
+        </div>
+
+        <section class="products">
+            <div class="products__grid" id="collections-grid">
+                <div class="collections-empty">Ничего не найдено</div>
+            </div>
+        </section>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <div id="modals-placeholder"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/collections.js"></script>
+</body>
+</html>
