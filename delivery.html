@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNFORT - Доставка</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@100;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="preloader" id="preloader">
+        <div class="preloader__content">UNFORT</div>
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div class="delivery-page">
+            <h1 class="delivery-page__title">Доставка</h1>
+            <div class="product-detail__accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="terms">
+                        Термины
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content" id="terms">
+                        <p><strong>РЕЛИЗ</strong> – публикация нового товара на сайте.</p>
+                        <p><strong>ДРОП</strong> – публикация товара на сайте с возможностью его заказа в ограниченном тираже.</p>
+                        <p><strong>ПРЕДЗАКАЗ</strong> – статус товаров, которых ещё нет в наличии, но они на стадии производства. Стоимость на данный товар временно снижена, однако получить данный товар возможно лишь после дропа.</p>
+                        <p><strong>РЕСТОК</strong> – повторный выход в продажу товара, который ранее был в наличии.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="cdek">
+                        Сдэк
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content" id="cdek">
+                        <p>Стоимость доставки рассчитывается автоматически системой СДЭК.</p>
+                        <p>Срок обработки заказа: до 7 рабочих дней.</p>
+                        <p>Более точные сроки доставки, трек-код для отслеживания вы сможете увидеть в письме-подтверждении после передачи заказа в транспортную компанию.</p>
+                        <p>*В праздничные дни и сезонность. Сроки доставки могут быть увеличены.</p>
+                        <p>Обращаем Ваше внимание на то, что переданный в транспортную компанию заказ невозможно скорректировать: изменить цвет, размер и прочие характеристики.</p>
+                        <p>Если Ваш заказ еще не передан в транспортную компанию, его можно изменить/отменить, написав письмо на электронную почту поддержки: <a href="mailto:support@unfort.ru">support@unfort.ru</a></p>
+                        <p>В письме на почту поддержки необходимо указать: номер заказа, состав заказа и уточнить характеристики, которые Вы хотели бы изменить/отменить.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="russianpost">
+                        Почта России
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content" id="russianpost">
+                        <p>Стоимость доставки в пределах РФ: 550₽</p>
+                        <p>Срок обработки заказа: до 7 рабочих дней.</p>
+                        <p>Более точные сроки доставки, трек-код для отслеживания вы сможете увидеть в письме-подтверждении после передачи заказа на почту.</p>
+                        <p>*В праздничные дни и сезонность. Сроки доставки могут быть увеличены.</p>
+                        <p>Обращаем Ваше внимание на то, что переданный на почту заказ невозможно скорректировать: изменить цвет, размер и прочие характеристики.</p>
+                        <p>Если Ваш заказ еще не передан на почту, его можно изменить/отменить, написав письмо на электронную почту поддержки: <a href="mailto:support@unfort.ru">support@unfort.ru</a></p>
+                        <p>В письме на почту поддержки необходимо указать: номер заказа, состав заказа и уточнить характеристики, которые Вы хотели бы изменить/отменить.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <div id="modals-placeholder"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/loadComponents.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/delivery.js"></script>
+</body>
+</html>
