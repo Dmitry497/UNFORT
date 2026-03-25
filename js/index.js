@@ -50,7 +50,7 @@ function renderProducts(productsArray) {
             const card = btn.closest('.product-card');
             const productId = card.dataset.productId;
             if (!productId) return;
-            toggleFavorite(productId, btn); // из common.js
+            toggleFavorite(productId, btn);
         });
     });
 }
@@ -62,7 +62,8 @@ function renderAllPage(page) {
     currentPage = page;
     updatePagination();
     pagination.classList.remove('hidden');
-    productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Убираем автоскролл - комментарий или удаление этой строки
+    // productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function renderCategory(category) {
