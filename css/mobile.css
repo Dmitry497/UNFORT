@@ -1,0 +1,413 @@
+@media (max-width: 450px) {
+    /* ----- ШАПКА ----- */
+    .header__container {
+        flex-wrap: wrap;                /* разрешаем перенос элементов */
+        padding: 10px 10px;
+    }
+
+    /* Логотип — переносим на верхнюю строку */
+    .header__logo {
+        order: -1;                      /* ставим первым в контейнере */
+        width: 100%;                    /* занимает всю ширину */
+        text-align: center;              /* центрируем текст */
+        transform: translateX(0);         /* убираем прежний сдвиг */
+        margin: 0 0 8px 0;               /* отступ снизу */
+        font-size: 32px;                 /* можно уменьшить */
+    }
+
+    /* Бургер */
+    .header__burger {
+        margin-right: 8px;
+        width: 26px;
+        height: 18px;
+    }
+
+    /* Навигационные ссылки (Каталог, Коллекции) */
+    .header__nav-link {
+        margin-right: 12px;
+        font-size: 14px;
+    }
+
+    /* Иконки */
+    .header__icon {
+        margin-left: 8px;
+    }
+    .header__icon img {
+        width: 22px;
+    }
+
+    /* ----- ПАНЕЛЬ КАТЕГОРИЙ ----- */
+    .category-tabs-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+        justify-content: flex-start;   /* ← прижимаем табы к левому краю */
+        padding-left: 10px;             /* ← небольшой отступ слева для ALL */
+        box-sizing: border-box;
+    }
+
+    .category-tabs {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        width: max-content;
+        gap: 55px;
+        margin: 15px 10px 15px 0;      /* левый margin убираем, он теперь через padding-wrapper */
+        border-bottom: 1px solid #000000;
+        max-width: none;
+    }
+
+    .category-tab {
+        white-space: nowrap;
+        font-size: 11px;
+        padding: 6px 0;
+    }
+}
+
+@media (max-width: 992px) {
+    .products__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Адаптив для мобильных (до 450px) */
+@media (max-width: 450px) {
+    .products {
+        padding: 0 10px 30px;
+    }
+    .products__grid {
+        grid-template-columns: 1fr;    /* одна колонка */
+        gap: 20px;
+    }
+    .product-card {
+        max-width: 100%;
+    }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 600px) {
+    .favorite-modal {
+        width: 100%;
+        right: -100%;
+    }
+    .favorite-modal__inner {
+        width: auto;
+        padding: 20px;
+        height: calc(100vh - 40px);
+    }
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+@media (max-width: 992px) {
+    .footer__top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer__group--left,
+    .footer__group--right {
+        justify-content: center;
+    }
+
+    .footer__group--center {
+        order: 1; /* можно менять порядок при необходимости */
+    }
+
+    .footer__brand {
+        order: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer__group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer__socials {
+        justify-content: center;
+    }
+}
+
+
+/* Мобильная версия страницы товара (max-width: 450px) */
+@media (max-width: 450px) {
+    .product-page {
+        padding: 0;
+    }
+
+    .product-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .product-detail__main-image {
+        max-width: 50%;
+    }
+
+    .product-detail__info {
+        padding: 0 15px;
+    }
+
+    .product-detail__title {
+        font-size: 18px;
+    }
+
+    .product-detail__price--new {
+        font-size: 20px;
+    }
+
+    .product-detail__price--old {
+        font-size: 16px;
+    }
+
+    .product-detail__installment {
+        font-size: 16px;
+        padding-bottom: 15px;
+    }
+
+    .product-detail__size-btn {
+        min-width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .product-detail__actions {
+        margin: 10px 0;
+    }
+
+    .product-detail__favorite-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .product-detail__cart-btn {
+        height: 40px;
+        font-size: 14px;
+        display: flex;
+        align-items: center ;
+        justify-content: start;
+        padding-left: 120px;
+    }
+
+    .product-detail__description p {
+        font-size: 13px;
+    }
+
+    /* Аккордеон */
+    .product-detail__accordion {
+        margin: 20px 0;
+        padding: 0 15px;
+    }
+
+    .accordion-header {
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+
+    .accordion-content.show {
+        padding: 15px 0;
+    }
+
+    .accordion-content li {
+        font-size: 13px;
+    }
+
+    /* Смотрите также */
+    .product-detail__related {
+        margin-top: 30px;
+        padding: 20px 15px 0;
+    }
+
+    .product-detail__related h2 {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .related-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 450px) {
+    /* Главная страница: две карточки в ряд */
+    .products__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* Страница товара: изображение на всю ширину */
+    .product-detail__main-image {
+        max-width: 100%;
+        width: 100%;
+        aspect-ratio: 1/1; /* сохраняем квадрат */
+    }
+
+    /* Убедимся, что контейнер галереи не имеет лишних отступов */
+    .product-detail__gallery {
+        padding: 0;
+        width: 68%;
+    }
+
+    /* Стрелки можно немного уменьшить и расположить ближе к краям */
+    .product-detail__arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .product-detail__arrow--prev {
+        left: 5px;
+    }
+
+    .product-detail__arrow--next {
+        right: 5px;
+    }
+
+    /* Остальные элементы (заголовок, цены, размеры и т.д.) уже будут с padding 15px,
+       который мы задали ранее. Дополним, если нужно */
+}
+
+/* Футер для мобильных (max-width: 450px) */
+@media (max-width: 450px) {
+    .footer__top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    /* Логотип UNFORT */
+    .footer__brand {
+        order: 0;
+        margin: 0;
+        font-size: 32px;
+        text-align: left;
+        width: auto;
+        padding: 0;
+    }
+
+    /* Объединяем левую и правую группы ссылок в одну колонку */
+    .footer__group--left,
+    .footer__group--right {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Убираем дублирование отступов */
+    .footer__group--left {
+        order: 1;
+    }
+    .footer__group--right {
+        order: 2;
+    }
+
+    /* Центральный блок (соцсети и почта) */
+    .footer__group--center {
+        order: 3;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin: 0;
+    }
+
+    /* Соцсети в ряд, прижаты к левому краю */
+    .footer__socials {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    /* Круглые иконки */
+    .footer__social {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Почта */
+    .footer__email {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    /* Нижняя часть футера */
+    .footer__bottom {
+        height: auto;
+        padding: 15px 20px;
+        text-align: left;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 450px) {
+    .cart-modal__container {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        top: 0;
+        left: 0;
+        transform: none;
+        padding: 20px;
+    }
+}
+
+/* Адаптив для коллекций */
+@media (max-width: 768px) {
+    .collections-nav__container {
+        gap: 20px;
+        padding: 15px;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    
+    .collections-nav__btn {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 450px) {
+    .collections-nav__container {
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .collections-nav__btn {
+        font-size: 12px;
+        padding: 6px 0;
+    }
+    
+    .collections-empty {
+        padding: 40px 15px;
+        font-size: 16px;
+    }
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+    .about-page__title {
+        font-size: 28px;
+    }
+    .about-page__content {
+        font-size: 16px;
+    }
+}
+
+/* Адаптив */
+@media (max-width: 600px) {
+    .support-page__title {
+        font-size: 28px;
+    }
+    .support-page__content {
+        font-size: 14px;
+    }
+    .support-page__content strong {
+        min-width: 120px;
+    }
+}
