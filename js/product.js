@@ -1,4 +1,4 @@
-// product.js — логика страницы товара
+// product.js — логика страницы товара с вертикальным слайдером
 
 let mapInitialized = false;
 let currentMap = null;
@@ -9,7 +9,7 @@ let productContainer;
 let fullscreenModal, fullscreenImage, fullscreenClose, fullscreenPrev, fullscreenNext;
 let cartModal, cartOverlay, cartClose, cartContent;
 
-// Объект для быстрого доступа к товарам (уже есть в common.js, но для локального использования)
+// Объект для быстрого доступа к товарам
 const productsMap = {};
 if (typeof products !== 'undefined') {
     products.forEach(p => { productsMap[p.id] = p; });
@@ -20,20 +20,24 @@ const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('id');
 const product = productsMap[productId];
 
-// Массив изображений для галереи
+// Массив изображений для галереи (поддерживаем несколько картинок)
 let productImages = [];
 if (product) {
     if (product.images && Array.isArray(product.images) && product.images.length > 0) {
         productImages = product.images;
     } else {
-        const baseImages = [product.imgPrimary, product.imgSecondary].filter(Boolean);
-        for (let i = 0; i < 9; i++) {
-            productImages.push(baseImages[i % baseImages.length]);
+        // Если нет массива images, используем imgPrimary и imgSecondary
+        productImages = [product.imgPrimary, product.imgSecondary].filter(Boolean);
+        // Если картинок меньше 3, дублируем
+        while (productImages.length < 3 && productImages.length > 0) {
+            productImages.push(productImages[productImages.length % productImages.length]);
         }
     }
 }
 
 let currentImageIndex = 0;
+let isScrolling = false;
+let scrollTimeout;
 
 // Объект для хранения состояния полей формы (корзина)
 const formState = {
@@ -158,6 +162,62 @@ function showSuccessScreen() {
     }, 1000);
 }
 
+/* ========== ВЕРТИКАЛЬНЫЙ СЛАЙДЕР ========== */
+function initVerticalGallery() {
+    const imagesContainer = document.querySelector('.product-detail__images-container');
+    const imageItems = document.querySelectorAll('.product-detail__image-item');
+    
+    if (!imagesContainer || imageItems.length === 0) return;
+    
+    function updateActiveImageOnScroll() {
+        if (isScrolling) return;
+        
+        const containerRect = imagesContainer.getBoundingClientRect();
+        const containerCenter = containerRect.top + containerRect.height / 2;
+        
+        let activeIndex = 0;
+        let minDistance = Infinity;
+        
+        imageItems.forEach((item, index) => {
+            const itemRect = item.getBoundingClientRect();
+            const itemCenter = itemRect.top + itemRect.height / 2;
+            const distance = Math.abs(itemCenter - containerCenter);
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                activeIndex = index;
+            }
+        });
+        
+        if (activeIndex !== currentImageIndex) {
+            currentImageIndex = activeIndex;
+            updateActiveState();
+        }
+    }
+    
+    function updateActiveState() {
+        imageItems.forEach((item, index) => {
+            if (index === currentImageIndex) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+    
+    imagesContainer.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        isScrolling = true;
+        updateActiveImageOnScroll();
+        scrollTimeout = setTimeout(() => {
+            isScrolling = false;
+        }, 100);
+    });
+    
+    updateActiveImageOnScroll();
+    updateActiveState();
+}
+
 /* ========== РЕНДЕР СТРАНИЦЫ ТОВАРА ========== */
 function renderProductPage() {
     if (!product) {
@@ -165,38 +225,39 @@ function renderProductPage() {
         return;
     }
 
-    const isFavorite = favorites.includes(product.id); // favorites из common.js
+    const isFavorite = favorites.includes(product.id);
     const descriptionHTML = product.description 
         ? product.description.split('\n').map(p => `<p>${p}</p>`).join('')
         : `<p>Описание товара временно отсутствует.</p>`;
 
+    // Генерируем HTML для всех изображений
+    const imagesHTML = productImages.map((img, index) => `
+        <div class="product-detail__image-item ${index === 0 ? 'active' : ''}" data-index="${index}">
+            <img src="${img}" alt="${product.title}">
+        </div>
+    `).join('');
+
     productContainer.innerHTML = `
         <div class="product-detail">
+            <!-- Левая часть: вертикальный скролл с картинками -->
             <div class="product-detail__gallery">
-                <div class="product-detail__main-image-container">
-                    <button class="product-detail__arrow product-detail__arrow--prev">&lt;</button>
-                    <div class="product-detail__main-image">
-                        <img src="${productImages[0]}" alt="${product.title}" id="mainProductImage">
+                <div class="product-detail__info-sidebar">
+                    <h1 class="product-detail__title-sidebar">${product.title}</h1>
+                    <div class="product-detail__prices-sidebar">
+                        <span class="product-detail__price--new">${product.priceNew}</span>
+                        ${product.priceOld ? `<span class="product-detail__price--old">${product.priceOld}</span>` : ''}
                     </div>
-                    <button class="product-detail__arrow product-detail__arrow--next">&gt;</button>
+                    <div class="product-detail__installment-sidebar">4 платежа по ${product.installment}</div>
                 </div>
-                <div class="product-detail__thumbnails">
-                    ${productImages.map((img, index) => `
-                        <img src="${img}" alt="${product.title}" class="product-detail__thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
-                    `).join('')}
+                <div class="product-detail__gallery-scroll">
+                    <div class="product-detail__images-container">
+                        ${imagesHTML}
+                    </div>
                 </div>
             </div>
             
+            <!-- Правая часть: информация о товаре -->
             <div class="product-detail__info">
-                <h1 class="product-detail__title">${product.title}</h1>
-                
-                <div class="product-detail__prices">
-                    <span class="product-detail__price product-detail__price--new">${product.priceNew}</span>
-                    ${product.priceOld ? `<span class="product-detail__price product-detail__price--old">${product.priceOld}</span>` : ''}
-                </div>
-                
-                <div class="product-detail__installment">4 платежа по ${product.installment}</div>
-                
                 <div class="product-detail__sizes">
                     <h3>Размеры:</h3>
                     <div class="product-detail__size-buttons">
@@ -209,13 +270,12 @@ function renderProductPage() {
                 </div>
                 
                 <div class="product-detail__actions">
+                    <a href="#" class="product-detail__cart-btn">Добавить в корзину</a>
                     <button class="product-detail__favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
                         <svg width="25" height="22" viewBox="0 0 24 24" fill="${isFavorite ? '#ff4d4f' : 'none'}" stroke="currentColor" stroke-width="2">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
                     </button>
-                    
-                    <a href="#" class="product-detail__cart-btn">Добавить в корзину</a>
                 </div>
                 
                 <div class="product-detail__description">
@@ -262,14 +322,18 @@ function renderProductPage() {
         </div>
     `;
 
-    initGallery();
+    // Инициализация вертикального слайдера
+    setTimeout(() => {
+        initVerticalGallery();
+    }, 100);
+    
     initAccordion();
 
     const favBtn = document.querySelector('.product-detail__favorite-btn');
     if (favBtn) {
         favBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            toggleFavorite(product.id, favBtn); // из common.js
+            toggleFavorite(product.id, favBtn);
         });
     }
 
@@ -464,7 +528,7 @@ function renderCartContent() {
         });
     });
 
-    // ===== ИНИЦИАЛИЗАЦИЯ ФОРМЫ (DaData, карты) =====
+    // ===== ИНИЦИАЛИЗАЦИЯ ФОРМЫ =====
     if (typeof $.fn.mask !== 'undefined') {
         $('#phone').mask('+7 (999) 999-99-99');
     }
@@ -764,70 +828,9 @@ function renderRelatedProducts() {
             const card = btn.closest('.product-card');
             const relatedProductId = card.dataset.productId;
             if (!relatedProductId) return;
-            toggleFavorite(relatedProductId, btn); // из common.js
+            toggleFavorite(relatedProductId, btn);
         });
     });
-}
-
-/* ========== ГАЛЕРЕЯ ========== */
-function initGallery() {
-    const mainImage = document.getElementById('mainProductImage');
-    const prevBtn = document.querySelector('.product-detail__arrow--prev');
-    const nextBtn = document.querySelector('.product-detail__arrow--next');
-    const thumbnails = document.querySelectorAll('.product-detail__thumbnail');
-
-    function setMainImage(index) {
-        if (index < 0) index = productImages.length - 1;
-        if (index >= productImages.length) index = 0;
-        mainImage.src = productImages[index];
-        currentImageIndex = index;
-        thumbnails.forEach((thumb, i) => {
-            if (i === index) thumb.classList.add('active');
-            else thumb.classList.remove('active');
-        });
-    }
-
-    prevBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setMainImage(currentImageIndex - 1);
-    });
-
-    nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setMainImage(currentImageIndex + 1);
-    });
-
-    thumbnails.forEach(thumb => {
-        thumb.addEventListener('click', () => {
-            const index = parseInt(thumb.dataset.index);
-            setMainImage(index);
-        });
-    });
-
-    mainImage.addEventListener('click', () => {
-        openFullscreen(currentImageIndex);
-    });
-}
-
-/* ========== ПОЛНОЭКРАННЫЙ РЕЖИМ ========== */
-function openFullscreen(startIndex) {
-    currentImageIndex = startIndex;
-    fullscreenImage.src = productImages[currentImageIndex];
-    fullscreenModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeFullscreen() {
-    fullscreenModal.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-function changeFullscreenImage(delta) {
-    let newIndex = currentImageIndex + delta;
-    if (newIndex < 0) newIndex = productImages.length - 1;
-    if (newIndex >= productImages.length) newIndex = 0;
-    currentImageIndex = newIndex;
-    fullscreenImage.src = productImages[currentImageIndex];
 }
 
 /* ========== ИНИЦИАЛИЗАЦИЯ ========== */
@@ -859,6 +862,19 @@ function initProductPage() {
     }
 
     renderProductPage();
+}
+
+function closeFullscreen() {
+    fullscreenModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function changeFullscreenImage(delta) {
+    let newIndex = currentImageIndex + delta;
+    if (newIndex < 0) newIndex = productImages.length - 1;
+    if (newIndex >= productImages.length) newIndex = 0;
+    currentImageIndex = newIndex;
+    fullscreenImage.src = productImages[currentImageIndex];
 }
 
 document.addEventListener('componentsLoaded', initProductPage);
