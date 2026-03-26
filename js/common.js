@@ -56,12 +56,30 @@ function initBurger() {
     }
 }
 
+/* ========== АКТИВНАЯ ССЫЛКА В МЕНЮ ========== */
+function setActiveMenuLink() {
+    const currentPath = window.location.pathname;
+    const menuLinks = document.querySelectorAll('.header__menu-link');
+    
+    menuLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.remove('active');
+        
+        if (href === currentPath || 
+            (currentPath === '/' && href === 'index.html') ||
+            (currentPath.endsWith(href))) {
+            link.classList.add('active');
+        }
+    });
+}
+
 /* ========== ИЗБРАННОЕ ========== */
 function updateFavoriteCount() {
     const countEl = document.querySelector('.header__favorite-count');
     if (countEl) {
-        const count = window.favorites.length;
-        countEl.textContent = count;
+        let count = window.favorites.length;
+        const displayCount = count > 99 ? '99+' : count;
+        countEl.textContent = displayCount;
         countEl.setAttribute('data-count', count);
     }
     localStorage.setItem('favorites', JSON.stringify(window.favorites));
@@ -230,14 +248,14 @@ function initCart() {
 }
 
 /* ========== МОДАЛКА ПРИВЕТСТВИЯ (только на index.html и 1 раз за сессию) ========== */
-let welcomeModalShown = false;
-
 function initWelcomeModal() {
     const isIndexPage = window.location.pathname === '/' || 
                         window.location.pathname === '/index.html' || 
                         window.location.pathname.endsWith('index.html');
     
-    if (!isIndexPage || welcomeModalShown) {
+    const hasBeenShown = sessionStorage.getItem('welcomeModalShown');
+    
+    if (!isIndexPage || hasBeenShown) {
         return;
     }
     
@@ -246,7 +264,7 @@ function initWelcomeModal() {
         const welcomeModal = document.getElementById('welcomeModal');
         
         if (welcomeOverlay && welcomeModal) {
-            welcomeModalShown = true;
+            sessionStorage.setItem('welcomeModalShown', 'true');
             setTimeout(() => {
                 welcomeOverlay.classList.add('active');
                 welcomeModal.classList.add('active');
@@ -296,7 +314,7 @@ function initWelcomeModal() {
         welcomeOverlay.addEventListener('click', closeWelcomeModal);
     }
     
-    welcomeModalShown = true;
+    sessionStorage.setItem('welcomeModalShown', 'true');
     setTimeout(() => {
         welcomeOverlay.classList.add('active');
         welcomeModal.classList.add('active');
@@ -310,6 +328,7 @@ function initCommon() {
     initFavorites();
     initCart();
     initWelcomeModal();
+    setActiveMenuLink();
 }
 
 document.addEventListener('componentsLoaded', initCommon);
