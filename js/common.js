@@ -45,7 +45,6 @@ function initBurger() {
         link.removeEventListener('click', closeMenu);
         link.addEventListener('click', closeMenu);
     });
-
     document.removeEventListener('keydown', closeOnEscape);
     document.addEventListener('keydown', closeOnEscape);
     
